@@ -5,8 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-LOCAL_PATH := device/infinix/zenith
-
 # Virtual A/B
 ENABLE_VIRTUAL_AB := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)

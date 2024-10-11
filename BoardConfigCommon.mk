@@ -5,22 +5,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-DEVICE_PATH := device/infinix/zenith
+DEVICE_PATH := device/transsion/mt6893-common
 
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
 
-# A/B
-AB_OTA_UPDATER := true
-AB_OTA_PARTITIONS += \
-    product \
-    vbmeta_vendor \
-    system_ext \
-    vendor \
-    system \
-    boot \
-    vbmeta_system \
-    vendor_boot
+TARGET_RECOVERY_DEVICE_DIRS := \
+    $(COMMON_PATH) \
+    $(DEVICE_PATH)
 
 # Architecture
 TARGET_ARCH := arm64
@@ -37,11 +29,8 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
 
-# Assert
-TARGET_OTA_ASSERT_DEVICE := zenith
-
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := zenith
+TARGET_BOOTLOADER_BOARD_NAME := mt6893
 TARGET_NO_BOOTLOADER := true
 
 # Build Rules
@@ -54,13 +43,11 @@ TARGET_SCREEN_DENSITY := 480
 # Kernel
 BOARD_BOOTIMG_HEADER_VERSION := 3
 BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
-# From 2048, switch to 4096 since header v3
 BOARD_PAGE_SIZE := 4096
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_RAMDISK_OFFSET := 0x11088000
-BOARD_TAGS_OFFSET := 0x07c08000
-BOARD_DTB_OFFSET := 0x07c08000
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_MKBOOTIMG_ARGS += --vendor_cmdline $(BOARD_VENDOR_CMDLINE)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE) --board ""
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
@@ -68,8 +55,6 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
-TARGET_KERNEL_CONFIG := zenith_defconfig
-TARGET_KERNEL_SOURCE := kernel/infinix/zenith
 
 # Kernel
 BOARD_BOOT_HEADER_VERSION := 3
@@ -86,7 +71,6 @@ BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 
 # DTB - prebuild
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
-BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 262144
@@ -113,8 +97,8 @@ TARGET_NO_RECOVERY := true
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
-TARGET_VENDOR_PROP := $(DEVICE_PATH)/vendor.prop
+TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/recovery.fstab
+TARGET_VENDOR_PROP := $(COMMON_PATH)/vendor.prop
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
