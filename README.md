@@ -1,4 +1,4 @@
-# Android device tree for Infinix Infinix X6739 (Infinix-X6739)
+# Android Common TWRP device tree for Transsion mt6893 devices
 
 ```
 #
